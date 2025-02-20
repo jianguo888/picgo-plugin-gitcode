@@ -1,5 +1,3 @@
-好的，我来帮你编写一个完整的 README.md 文件，包含项目说明、安装配置和使用方法等内容：
-
 # PicGo-Plugin-GitCode
 
 > 一个基于 GitCode 的 PicGo 图床插件
@@ -79,7 +77,7 @@ npm install picgo-plugin-gitcode -g
 ## 贡献者
 
 - 坚果
-- 若成
+- 若城
 
 ## 许可证
 
