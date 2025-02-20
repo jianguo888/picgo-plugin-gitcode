@@ -17,3 +17,7 @@ https://picgo.github.io/PicGo-Core-Doc/zh/dev-guide/cli.html
 https://picgo.github.io/PicGo-Core-Doc/zh/dev-guide/gui.html#guimenu
 
 https://github.com/zhanghuid/picgo-plugin-gitee
+
+## 贡献者
+坚果
+若成
