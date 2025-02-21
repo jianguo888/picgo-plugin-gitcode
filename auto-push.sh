@@ -19,7 +19,7 @@ if [ $current_hour -ge 8 ] && [ $current_hour -le 23 ]; then
         git commit -m "自动提交: $(date '+%Y-%m-%d %H:%M:%S')"
         
         # 推送到远程仓库
-        git push origin master
+        git push origin main
         
         echo "=== 提交完成 ==="
     else
