@@ -212,8 +212,9 @@ class GitCodeUploader {
    * @returns {string} GitCode API路径
    */
   getFilePath(url) {
-    const pathInfo = urlParser.parse(url);
-    const baseUrl = `${pathInfo.protocol}//${pathInfo.host}`;
+    // 使用现代的 URL API 替换废弃的 url.parse()
+    const urlObj = new URL(url);
+    const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
     return url
       .replace(baseUrl, `${baseUrl}/api/${CONFIG.API_VERSION}/repos`)
       .replace('raw/master', 'contents');
