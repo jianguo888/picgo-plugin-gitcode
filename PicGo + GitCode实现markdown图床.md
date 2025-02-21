@@ -22,12 +22,11 @@
 
 ##  3. 配置PicGo
 
-安装了**gitee-uploader 1.1.2**插件之后，我们开始配置插件
+安装了**gitcode**插件之后，我们开始配置插件
 
 ### 配置插件的要点如下：
 
-- repo：用户名/仓库名称，比如我自己的仓库MysticalYu/pic，找不到的可以直接复制仓库的url,复制浏览器的仓库地址，而不是页面左上角显示的，容易出现大小写问题
-- branch：分支，这里写上master
+- repo：用户名/仓库名称，比如我自己的仓库qq_39132095/pic，找不到的可以直接复制仓库的url,复制浏览器的仓库地址，而不是页面左上角显示的，容易出现大小写问题
 - token：填入码云的私人令牌
 - path：路径，一般写上img
 - customPath：提交消息，这一项和下一项customURL都不用填。在提交到码云后，会显示提交消息，插件默认提交的是 `Upload 图片名 by picGo - 时间`
@@ -54,12 +53,6 @@
    ### 保存，完成即可。
 
 ![image-20250220133443679](https://luckly007.oss-cn-beijing.aliyuncs.com/nutpi/image-20250220133443679.png)
-
-## 4. 将仓库配置成giteePage页
-
-我们需要通过链接来访问图片，这里将刚才建立的仓库设置成GiteePage页
-
-1. 点击服务，选择Gitee Pages
 
 
 
