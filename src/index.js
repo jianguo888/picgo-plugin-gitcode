@@ -8,9 +8,8 @@ const CONFIG = {
   CONFIG_NAME: 'picBed.gitcode',   // 配置存储键名
   API_VERSION: 'v5',               // API版本号
 };
-
 const urlParser = require('url');
-
+const { v4: uuidv4 } = require('uuid');
 /**
  * GitCode图床上传器类
  * 实现图片上传到GitCode平台的核心功能
@@ -81,7 +80,7 @@ class GitCodeUploader {
 
     for (const item of ctx.output) {
       try {
-        await this.uploadImage(item, realUrl, userConfig);
+        await this.uploadImage(item, realUrl, userConfig, ctx);
       } catch (err) {
         this.handleUploadError(err);
       }
@@ -96,14 +95,18 @@ class GitCodeUploader {
    * @param {string} baseUrl 基础URL
    * @param {Object} userConfig 用户配置
    */
-  async uploadImage(imgItem, baseUrl, userConfig) {
+  async uploadImage(imgItem, baseUrl, userConfig, ctx) {
     const image = imgItem.buffer || Buffer.from(imgItem.base64Image, 'base64');
-    const perRealUrl = `${baseUrl}/${imgItem.fileName}`;
+    const getUUIDV4 = `a${uuidv4()}`
+    const perRealUrl = `${baseUrl}/${getUUIDV4}${imgItem.fileName}`;
     const postConfig = this.createPostOptions(perRealUrl, image, userConfig);
-
-    await this.ctx.Request.request(postConfig);
-    imgItem.imgUrl = `${userConfig.previewUrl}/${imgItem.fileName}`;
-
+    await ctx.Request.request(postConfig);
+    imgItem.imgUrl = `${userConfig.previewUrl}/${getUUIDV4}${imgItem.fileName}`;
+    ctx.log.success(`[上传操作]成功1：${imgItem.fileName}`);
+    ctx.emit('notification', {
+      title: '上传成功',
+      body: `${imgItem.fileName} 上传成功`,
+    });
     // 清理临时数据
     delete imgItem.base64Image;
     delete imgItem.buffer;
