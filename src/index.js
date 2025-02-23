@@ -1,4 +1,14 @@
 /**
+ * picgo-plugin-gitcode
+ * PicGo uploader for GitCode
+ * 
+ * @version 1.0.2
+ * @author nutpi
+ * @license MIT
+ * @homepage https://gitcode.com/nutpi/picgo-plugin-gitcode
+ */
+
+/**
  * 全局配置常量
  */
 const CONFIG = {

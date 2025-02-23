@@ -1,6 +1,6 @@
 {
   "name": "picgo-plugin-gitcode",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "picgo uploader for gitcode",
   "main": "src/index.js",
   "publishConfig": {
@@ -18,7 +18,7 @@
     "picgo-gui-plugin",
     "picgo-plugin"
   ],
-  "author": "坚果派",
+  "author": "nutpi",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^5.0.1",

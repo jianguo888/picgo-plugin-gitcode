@@ -97,6 +97,11 @@ npm install picgo-plugin-gitcode -g
 - 坚果
 - 若城
 
+## 联系方式
+
+- 微信公众号：nutpi
+- 官方网站：[nutpi.net](https://nutpi.net)
+
 ## 许可证
 
 MIT License
