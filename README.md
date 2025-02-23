@@ -95,7 +95,7 @@ npm install picgo-plugin-gitcode -g
 ## 贡献者
 
 - 坚果
-- 若城
+- 全栈若城
 
 ## 联系方式
 
