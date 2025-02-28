@@ -18,6 +18,7 @@
 const CONFIG = {
   UPLOADER_NAME: 'gitcode',        // 上传器名称，用于PicGo识别
   DOMAIN: 'https://gitcode.com',   // GitCode平台域名
+  DOMAIN_PREV: 'https://raw.gitcode.com',
   DEFAULT_MSG: 'picgo commit',     // 默认Git提交信息
   CONFIG_NAME: 'picBed.gitcode',   // 配置在PicGo中的存储键名
   API_VERSION: 'v5',               // GitCode API版本号
@@ -86,7 +87,7 @@ class GitCodeUploader {
       // 构建API基础URL
       baseUrl: `${CONFIG.DOMAIN}/api/${CONFIG.API_VERSION}/repos/${userConfig.owner}/${userConfig.repo}`,
       // 构建预览URL
-      previewUrl: `${CONFIG.DOMAIN}/${userConfig.owner}/${userConfig.repo}/raw/master${this.formatConfigPath(userConfig)}`,
+      previewUrl: `${CONFIG.DOMAIN_PREV}/${userConfig.owner}/${userConfig.repo}/raw/main${this.formatConfigPath(userConfig)}`,
       // 使用用户配置的提交信息或默认信息
       message: userConfig.message || CONFIG.DEFAULT_MSG,
     };
