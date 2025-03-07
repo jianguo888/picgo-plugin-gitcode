@@ -3,10 +3,12 @@
  */
 const CONFIG = {
   UPLOADER_NAME: 'gitcode',        // 上传器名称
-  DOMAIN: 'https://gitcode.com',   // GitCode平台域名
+  DOMAIN: 'https://gitcode.com',   // GitCode平台域名 
+  FILE_DOMAIN: 'https://raw.gitcode.com',// 文件域名
   DEFAULT_MSG: 'picgo commit',     // 默认提交信息
   CONFIG_NAME: 'picBed.gitcode',   // 配置存储键名
   API_VERSION: 'v5',               // API版本号
+  DEFAULT_BRANCH: 'master',        // 默认分支名称
 };
 
 const urlParser = require('url');
@@ -45,9 +47,10 @@ class GitCodeUploader {
    * 获取请求头配置
    * @returns {Object} HTTP请求头
    */
-  getHeaders() {
+  getHeaders(token) {
     return {
       'Content-Type': 'application/json;charset=UTF-8',
+      'Authorization': token ? `Bearer ${token}` : undefined,
     };
   }
 
@@ -62,10 +65,14 @@ class GitCodeUploader {
       throw new Error('找不到上传器配置信息');
     }
 
+    // 使用用户配置的分支名或默认分支名
+    const branch = userConfig.branch || CONFIG.DEFAULT_BRANCH;
+
     return {
       ...userConfig,
+      branch,
       baseUrl: `${CONFIG.DOMAIN}/api/${CONFIG.API_VERSION}/repos/${userConfig.owner}/${userConfig.repo}`,
-      previewUrl: `${CONFIG.DOMAIN}/${userConfig.owner}/${userConfig.repo}/raw/master${this.formatConfigPath(userConfig)}`,
+      previewUrl: `${CONFIG.FILE_DOMAIN}/${userConfig.owner}/${userConfig.repo}/raw/${branch}${this.formatConfigPath(userConfig)}`,
       message: userConfig.message || CONFIG.DEFAULT_MSG,
     };
   }
@@ -133,12 +140,12 @@ class GitCodeUploader {
     return {
       method: 'POST',
       url: encodeURI(url),
-      headers: this.getHeaders(),
-      formData: {
-        access_token: config.token,
+      headers: this.getHeaders(config.token),
+      body: {
         content: image.toString('base64'),
         message: config.message || CONFIG.DEFAULT_MSG,
       },
+      json: true // 指定请求体为JSON格式
     };
   }
 
@@ -178,7 +185,7 @@ class GitCodeUploader {
     const opts = {
       method: 'DELETE',
       url: encodeURI(url),
-      headers: this.getHeaders(),
+      headers: this.getHeaders(config.token),
     };
 
     await this.ctx.request(opts);
@@ -192,7 +199,8 @@ class GitCodeUploader {
    * @returns {string} 完整的删除URL
    */
   buildDeleteUrl(filepath, config, sha) {
-    return `${filepath}?access_token=${config.token}&message=${config.message}&sha=${sha}`;
+    // 不在URL中包含access_token，改为使用Authorization头
+    return `${filepath}?message=${config.message}&sha=${sha}`;
   }
 
   /**
@@ -214,9 +222,12 @@ class GitCodeUploader {
   getFilePath(url) {
     const pathInfo = urlParser.parse(url);
     const baseUrl = `${pathInfo.protocol}//${pathInfo.host}`;
+    const config = this.getUserConfig();
+    const branch = config.branch || CONFIG.DEFAULT_BRANCH;
+    
     return url
       .replace(baseUrl, `${baseUrl}/api/${CONFIG.API_VERSION}/repos`)
-      .replace('raw/master', 'contents');
+      .replace(`raw/${branch}`, 'contents');
   }
 
   /**
@@ -226,16 +237,18 @@ class GitCodeUploader {
    */
   async getSha(filepath) {
     const config = this.getUserConfig();
-    const url = `${filepath}?access_token=${config.token}`;
+    // 不在URL中包含access_token，改为使用Authorization头
+    const url = filepath;
 
     const opts = {
       method: 'GET',
       url: encodeURI(url),
-      headers: this.getHeaders(),
+      headers: this.getHeaders(config.token),
+      json: true
     };
 
     const res = await this.ctx.Request.request(opts);
-    return JSON.parse(res).sha;
+    return res.sha;
   }
 
   /**
@@ -271,6 +284,14 @@ class GitCodeUploader {
         required: true,
         message: 'repo',
         alias: 'repo',
+      },
+      {
+        name: 'branch',
+        type: 'input',
+        default: userConfig.branch || CONFIG.DEFAULT_BRANCH,
+        required: true,
+        message: '分支名，默认为master',
+        alias: '分支',
       },
       {
         name: 'path',
