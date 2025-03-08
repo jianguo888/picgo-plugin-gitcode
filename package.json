@@ -1,6 +1,6 @@
 {
   "name": "picgo-plugin-gitcode",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "picgo uploader for gitcode",
   "main": "src/index.js",
   "publishConfig": {
